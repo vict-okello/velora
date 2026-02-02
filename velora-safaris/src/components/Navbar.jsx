@@ -1,0 +1,121 @@
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { Menu, X, User, ShoppingCart } from "lucide-react";
+import logo from "../assets/velogo.png";
+
+const linkBase =
+  "px-2 py-1 text-sm font-medium text-gray-500 hover:text-gray-900 transition";
+const linkActive = "text-gray-900";
+
+function NavItem({ to, children, end = false, onClick }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      onClick={onClick}
+      className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
+    >
+      {children}
+    </NavLink>
+  );
+}
+
+export default function Navbar({ cartCount = 0 }) {
+  const [open, setOpen] = useState(false);
+  const close = () => setOpen(false);
+
+  return (
+    <header className="w-full bg-[#f2efef]">
+      <div className="flex h-16 items-center justify-between px-2">
+        <NavLink
+          to="/"
+          className="flex items-center gap-2 pl-4"
+          onClick={close}
+        >
+          <img
+            src={logo}
+            alt="Velora Safaris logo"
+            className="h-15 w-15 object-contain"
+          />
+        </NavLink>
+
+        {/* Center: Desktop nav */}
+        <nav className="hidden items-center gap-8 md:flex">
+          <NavItem to="/" end>
+            Home
+          </NavItem>
+          <NavItem to="/about">About</NavItem>
+          <NavItem to="/services">Services</NavItem>
+          <NavItem to="/price">Price</NavItem>
+          <NavItem to="/contact">Contact</NavItem>
+        </nav>
+
+        <div className="flex items-center gap-3 pr-4">
+          {/* User icon */}
+          <NavLink
+            to="/login"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 transition"
+            aria-label="Account"
+            onClick={close}
+          >
+            <User className="h-5 w-5 text-gray-800" />
+          </NavLink>
+
+          
+          <NavLink
+            to="/cart"
+            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 transition"
+            aria-label="Cart"
+            onClick={close}
+          >
+            <ShoppingCart className="h-5 w-5 text-gray-800" />
+
+            {cartCount > 0 && (
+              <span className="absolute -right-1 -top-1 grid h-5 min-w-[1.25rem] place-items-center rounded-full bg-pink-600 px-1 text-[11px] font-bold text-white">
+                {cartCount > 99 ? "99+" : cartCount}
+              </span>
+            )}
+          </NavLink>
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            className="ml-1 inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 transition md:hidden"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="h-px w-full bg-gray-100" />
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden">
+          <div className="px-4 py-3">
+            <div className="flex flex-col gap-2 rounded-2xl border items-center border-gray-100 bg-white p-3 shadow-sm">
+              <NavItem to="/" end onClick={close}>
+                Home
+              </NavItem>
+              <NavItem to="/about" onClick={close}>
+                About
+              </NavItem>
+              <NavItem to="/services" onClick={close}>
+                Services
+              </NavItem>
+              <NavItem to="/price" onClick={close}>
+                Price
+              </NavItem>
+              <NavItem to="/contact" onClick={close}>
+                Contact
+              </NavItem>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
