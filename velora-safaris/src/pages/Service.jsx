@@ -1,68 +1,14 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { NavLink } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
-import hero from "../assets/hero.png";
-import about from "../assets/about.png";
+import { services } from '../data/services'
 
 function Service() {
   const { addItem } = useCart()
   const [modal, setModal] = useState(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const sliderRef = useRef(null)
-
-  const services = useMemo(
-    () => [
-      {
-        title: 'Camping Escapes',
-        price: '$420',
-        unit: 'per night',
-        detail:
-          'Luxury tents, stargazing dinners, and guided sunrise drives.',
-        image: hero,
-      },
-      {
-        title: 'Guided Hiking',
-        price: '$260',
-        unit: 'per day',
-        detail:
-          'Day hikes with local naturalists, picnic lunches, and gear.',
-        image: about,
-      },
-      {
-        title: 'River Kayaking',
-        price: '$310',
-        unit: 'per day',
-        detail:
-          'Scenic waterways, safety crew, and wildlife photography stops.',
-        image: hero,
-      },
-      {
-        title: 'Cultural Immersions',
-        price: '$190',
-        unit: 'per day',
-        detail:
-          'Village visits, artisan workshops, and traditional meals.',
-        image: about,
-      },
-      {
-        title: 'Private Game Drives',
-        price: '$520',
-        unit: 'per day',
-        detail:
-          'Exclusive 4x4 access, expert trackers, and sunset aperitifs.',
-        image: hero,
-      },
-      {
-        title: 'Family Safari',
-        price: '$460',
-        unit: 'per night',
-        detail:
-          'Kid-friendly guides, flexible schedules, and cozy lodges.',
-        image: about,
-      },
-    ],
-    []
-  )
 
   const goNext = () => {
     setActiveIndex((prev) => (prev + 1) % services.length)
@@ -196,11 +142,11 @@ function Service() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.25 }}
               >
-                <div className="relative h-44 w-full overflow-hidden bg-stone-100">
+                <div className="group relative aspect-[3/2] w-full overflow-hidden rounded-t-3xl bg-amber-50">
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-stone-950/30 via-transparent to-transparent" />
                 </div>
@@ -218,13 +164,23 @@ function Service() {
                         {service.unit}
                       </span>
                     </div>
-                    <button
-                      className="cursor-pointer rounded-full border border-stone-200 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-700 transition hover:border-amber-500 hover:bg-amber-500 hover:text-white"
-                      onClick={() => addItem(service)}
-                      type="button"
-                    >
-                      Book
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <NavLink
+                        to={`/services/${service.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="cursor-pointer rounded-full border border-stone-200 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-700 transition hover:border-amber-500 hover:text-amber-600"
+                      >
+                        Details
+                      </NavLink>
+                      <button
+                        className="cursor-pointer rounded-full border border-stone-200 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-stone-700 transition hover:border-amber-500 hover:bg-amber-500 hover:text-white"
+                        onClick={() => addItem(service)}
+                        type="button"
+                      >
+                        Book
+                      </button>
+                    </div>
                   </div>
                 </div>
               </motion.div>

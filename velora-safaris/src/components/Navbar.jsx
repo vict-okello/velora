@@ -49,7 +49,7 @@ export default function Navbar() {
           </NavItem>
           <NavItem to="/about">About</NavItem>
           <NavItem to="/services">Services</NavItem>
-          <NavItem to="/price">Price</NavItem>
+          <NavItem to="/price">Pricing</NavItem>
           <NavItem to="/contact">Contact</NavItem>
         </nav>
 
@@ -110,7 +110,7 @@ export default function Navbar() {
                 Services
               </NavItem>
               <NavItem to="/price" onClick={close}>
-                Price
+                Pricing
               </NavItem>
               <NavItem to="/contact" onClick={close}>
                 Contact

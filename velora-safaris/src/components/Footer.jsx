@@ -71,12 +71,17 @@ export default function Footer() {
               </li>
               <li>
                 <NavLink to="/blog" className={linkCls}>
-                  News
+                  Journal
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/price" className={linkCls}>
                   Plans
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/#routes-map" className={linkCls}>
+                  Routes map
                 </NavLink>
               </li>
             </ul>
@@ -104,6 +109,11 @@ export default function Footer() {
               <li>
                 <NavLink to="/blog" className={linkCls}>
                   Blog
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/#testimonials" className={linkCls}>
+                  Testimonials
                 </NavLink>
               </li>
             </ul>
