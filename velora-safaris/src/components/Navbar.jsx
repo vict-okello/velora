@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Menu, X, User, ShoppingCart } from "lucide-react";
+import { Menu, X, UserCircle, ShoppingCart } from "lucide-react";
 import logo from "../assets/velogo.png";
+import about from "../assets/about.png";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const linkBase =
   "group relative px-2 py-1 text-sm font-medium text-gray-500 transition hover:text-gray-900";
@@ -26,6 +28,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   const { count: cartCount } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <header className="w-full bg-[#f2efef]">
@@ -54,19 +57,26 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3 pr-4">
-          {/* User icon */}
+          {/* Profile link (opens in new tab) */}
           <NavLink
-            to="/login"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 transition"
-            aria-label="Account"
+            to={isAuthenticated ? "/account" : "/login"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-2 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-gray-700 shadow-sm transition hover:border-amber-400 hover:text-gray-900"
+            aria-label={isAuthenticated ? "Open account" : "Open login"}
             onClick={close}
           >
-            <User className="h-5 w-5 text-gray-800" />
+            <span className="relative h-8 w-8 overflow-hidden rounded-full border border-gray-200 bg-amber-50">
+              <img src={about} alt="User avatar" className="h-full w-full object-cover" />
+            </span>
+            <UserCircle className="h-4 w-4 text-amber-600" />
           </NavLink>
 
           
           <NavLink
             to="/cart"
+            target="_blank"
+            rel="noopener noreferrer"
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-gray-100 transition"
             aria-label="Cart"
             onClick={close}

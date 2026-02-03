@@ -1,9 +1,24 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(() => {
+    try {
+      const raw = localStorage.getItem("velora_cart");
+      return raw ? JSON.parse(raw) : [];
+    } catch (error) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("velora_cart", JSON.stringify(items));
+    } catch (error) {
+      // ignore storage errors
+    }
+  }, [items]);
 
   const addItem = (item) => {
     setItems((prev) => [...prev, item]);
@@ -14,6 +29,7 @@ export function CartProvider({ children }) {
       items,
       count: items.length,
       addItem,
+      clearCart: () => setItems([]),
     }),
     [items]
   );
