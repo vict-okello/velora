@@ -2,9 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X, User, ShoppingCart } from "lucide-react";
 import logo from "../assets/velogo.png";
+import { useCart } from "../context/CartContext";
 
 const linkBase =
-  "px-2 py-1 text-sm font-medium text-gray-500 hover:text-gray-900 transition";
+  "group relative px-2 py-1 text-sm font-medium text-gray-500 transition hover:text-gray-900";
 const linkActive = "text-gray-900";
 
 function NavItem({ to, children, end = false, onClick }) {
@@ -16,13 +17,15 @@ function NavItem({ to, children, end = false, onClick }) {
       className={({ isActive }) => `${linkBase} ${isActive ? linkActive : ""}`}
     >
       {children}
+      <span className="absolute left-1/2 top-full h-0.5 w-0 -translate-x-1/2 rounded-full bg-amber-600 transition-all duration-300 group-hover:w-6" />
     </NavLink>
   );
 }
 
-export default function Navbar({ cartCount = 0 }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
+  const { count: cartCount } = useCart();
 
   return (
     <header className="w-full bg-[#f2efef]">
